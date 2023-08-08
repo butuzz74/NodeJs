@@ -25,12 +25,25 @@ async function printNotes() {
 }
 async function deleteNote(id) {
     const notes = await getNotes();
-    const newNotes = notes.filter(el => el.id !== id)
+    const newNotes = notes.mapfilter(el => el.id !== id)
     await fs.writeFile(notesPath, JSON.stringify(newNotes));
+}
+async function editNote(id, title) {
+  const notes = await getNotes();
+  const editNotes = notes.map(el => {
+    if(el.id === id){
+      el.title = title;
+      return el
+    } else {
+      return el
+    }
+  })
+  await fs.writeFile(notesPath, JSON.stringify(editNotes));
 }
 
 module.exports = {
   addNote,
   printNotes,
-  deleteNote
+  deleteNote,
+  editNote
 };
